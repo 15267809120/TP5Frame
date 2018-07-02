@@ -1,0 +1,95 @@
+{include file="Public/header" /}
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                
+                {include file="Public/breadcrumb" /}
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-8">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">新增权限组</h3>
+                                </div>
+                                <!-- form start -->
+                                <form role="form" id="form">
+                                    <div class="box-body">
+                                    {volist name="list_fields" id="vo"}
+                                        <div class="form-group">
+                                            <label for="{$vo}">{$vo}</label>
+                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="" placeholder="请输入{$vo}">
+                                        </div>
+                                    {/volist}
+                                        <div class="form-group">
+                                            <label for="jurisdiction">jurisdiction</label>
+                                            <div class="checkbox">
+                                            {volist name="menu_list" id="vo"}
+                                                <label>
+                                                    <input type="checkbox" name="id-{$vo.id}" value="1" />
+                                                    {$vo.name}
+                                                </label>
+                                                {if condition="!empty($vo['zlist'])"}
+                                                    <div style="text-indent:4em;">
+                                                        {volist name="vo['zlist']" id="v"}
+                                                        <label>
+                                                            <input type="checkbox" name="id-{$v.id}" value="1" />
+                                                            {$v.name}
+                                                        </label>
+                                                        {/volist}
+                                                    </div>
+                                                {/if}
+                                                <div style="margin-bottom: 30px;"></div>
+                                            {/volist}
+                                            </div>
+                                            
+                                        </div>
+
+                                    </div><!-- /.box-body -->
+
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.box -->
+
+                        </div><!--/.col (left) -->
+                        
+                    </div>   <!-- /.row -->
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <script type="text/javascript">
+            function ajax_submit(){
+                var name = $('#name').val();
+                var error = '';
+                if(name == '') error = '请输入权限组名字';
+                if(error != ''){
+                    layer.msg('请输入权限组名称');
+                    return false;
+                }
+                $.ajax({
+                    url:"{:Url('Jurisdiction/insert')}",
+                    datatype:'json',
+                    type:'post',
+                    data:$('#form').serialize(),
+                    success : function (result){
+                        if(result.code == 'success'){
+                            location.href="{:Url('Jurisdiction/grouplist')}";
+                        }
+                    }
+                })
+                return false;
+            }
+        </script>
+    {include file="Public/footer" /}
+    </body>
+</html>
