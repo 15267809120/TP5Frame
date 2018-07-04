@@ -1,0 +1,137 @@
+{include file="Public/header" /}
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">                
+                {include file="Public/breadcrumb" /}
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            
+                            <div class="box">
+                                <!-- <div class="box-header">
+                                    <h3 class="box-title">管理员列表</h3>
+                                </div> -->
+                                <div class="box-body table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <div class="row">
+                                            <div class="col-xs-2">
+                                                <a href="{:Url('Jurisdiction/insert')}">新增</a>
+                                            </div>
+                                            <div class="col-xs-6">
+                                            	<select id="search_name">
+                                                    {volist name="list_fields" id="vo"}
+                                                    	<option value="{$vo}">{$vo}</option>
+                                                    {/volist}
+                                                </select>
+                                                <input type="text" id="search_value" />
+                                                <button onclick="return search();">搜索</button>
+                                            </div>
+                                        </div>
+                                        <thead>
+                                            <tr>
+                                            {volist name="list_fields" id="vo"}
+                                                <th>{$vo}</th>
+                                            {/volist}
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {volist name="list" id="vo"}
+                                            <tr>
+                                                {volist name="$vo" id="v"}
+                                                    <td>{$v}</td>
+                                                {/volist}
+                                                <td>
+                                                    <button class="btn btn-info btn-sm" onclick="return update_this('{$vo.group_id}');">修改</button>
+                                                    <button class="btn btn-danger btn-sm" onclick="return delete_this('{$vo.group_id}');">删除</button>
+                                                </td>
+                                            </tr>
+                                            {/volist}
+                                        </tbody>
+<!--                                         <tfoot>
+                                            <tr>
+                                            {volist name="list_fields" id="vo"}
+                                                <th>{$vo}</th>
+                                            {/volist}
+                                            <th>操作</th>
+                                            </tr>
+                                        </tfoot> -->
+                                    </table>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <span id="count">总共 {$count} 条数据</span>
+                                        </div>
+                                        <div id="page" class="col-xs-6" style="text-align: right;">
+                                            {$page}
+                                        </div>
+                                    </div>
+                                </div><!-- /.box-body -->
+                            </div><!-- /.box -->
+                        </div>
+                    </div>
+
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <!-- page script -->
+        
+    {include file="Public/footer-table" /}
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('.pagination').css('margin','0');
+        $('#example1').dataTable({
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": false,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": true,
+        });
+        
+    });
+    var id=1;
+
+    function update_this(id){
+        var url = "{:Url('Jurisdiction/update')}";
+        url = url.replace('.html','/group_id/'+id);
+        location.href=url;
+    }
+
+    function delete_this(id){
+        //询问框
+        layer.confirm('确定删除吗', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:"{:Url('Jurisdiction/delete')}",
+                datatype:'json',
+                type:'post',
+                data:'group_id='+id,
+                success : function (result){
+                    if(result.code == 'success'){
+                        location.reload();
+                    }
+                }
+            })
+            
+        }, function(){
+            //这个空方法是取消，不要删除
+        });
+    }
+    
+    function search(){
+    	var search_name = $('#search_name').val();
+    	var search_value = $('#search_value').val();
+    	var url = "{:Url('Jurisdiction/search')}";
+        url = url.replace('.html','/search_name/'+search_name+'/search_value/'+search_value);
+        location.href=url;
+    }
+    </script>
+    </body>
+</html>

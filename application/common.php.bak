@@ -26,9 +26,20 @@ function getData($array){
 	$count = count($array);
 	if($count > 0){
 		foreach($array as $key => $value){
-			$data[$key] = $value->getData();
+			$data[$key] = $value->toArray();
 		}
 	}else{
+		$data = '';
+	}
+	return $data;
+	$count = count($array);
+	if($count == 1){
+		$data = $array->getData();
+	}else if($count > 1){
+		foreach($array as $key => $value){
+			$data[$key] = $value->getData();
+		}
+	}else if($count < 1){
 		$data = '';
 	}
 	return $data;

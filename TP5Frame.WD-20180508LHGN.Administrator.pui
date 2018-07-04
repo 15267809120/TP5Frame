@@ -1,0 +1,40 @@
+[Folders]
+.+AFw-=1
+.+AFw- - application=1
+.+AFw- - application - adminer=1
+.+AFw- - application - adminer - controller=1
+.+AFw- - application - adminer - logic=1
+.+AFw- - application - adminer - validate=1
+.+AFw- - template=1
+.+AFw- - template - adminer=1
+.+AFw- - template - adminer - Jurisdiction=1
+
+[Open Files]
+Active File Display Mode=1
+Active File Index=3
+Open File Line0=1424
+Open File Line1=3529
+Open File Line2=0
+Open File Line3=1141
+Open File Line4=590
+Open File Pos0=2278
+Open File Pos1=4349
+Open File Pos2=379
+Open File Pos3=1540
+Open File Pos4=2250
+Open File Window Pos0=0,1,-1,-1,-1,-1,5,27,1656,769
+Open File Window Pos1=0,1,-1,-1,-1,-1,5,27,1656,769
+Open File Window Pos2=0,1,-1,-1,-1,-1,5,27,1656,769
+Open File Window Pos3=0,1,-1,-1,-1,-1,5,27,1656,769
+Open File Window Pos4=0,1,-1,-1,-1,-1,5,27,1656,769
+Open File0=.+AFw-application+AFw-adminer+AFw-controller+AFw-Jurisdiction.php
+Open File1=.+AFw-application+AFw-adminer+AFw-logic+AFw-Jurisdiction.php
+Open File2=.+AFw-application+AFw-adminer+AFw-controller+AFw-Base.php
+Open File3=.+AFw-application+AFw-adminer+AFw-logic+AFw-Base.php
+Open File4=.+AFw-template+AFw-adminer+AFw-Jurisdiction+AFw-update.html
+Open File5=
+Remember Files=1
+
+[Project Information]
+Project Start=E2070700020003000E000000180000001B
+
