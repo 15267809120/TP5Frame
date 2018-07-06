@@ -1,0 +1,21 @@
+[Open Files]
+Active File Display Mode=1
+Active File Index=0
+Open File Line0=0
+Open File Pos0=0
+Open File Window Pos0=0,1,-1,-1,-1,-1,5,27,1633,769
+Open File0=.+AFw-application+AFw-admin+AFw-controller+AFw-User.php
+Open File1=
+Remember Files=1
+
+[Folders]
+.+AFw-=1
+.+AFw- - application=1
+.+AFw- - application - adminer - logic=1
+.+AFw- - application - adminer - validate=1
+.+AFw- - template=1
+.+AFw- - application - adminer=1
+.+AFw- - application - adminer - controller=1
+.+AFw- - template - adminer=1
+.+AFw- - template - adminer - Jurisdiction=1
+.+AFw- - application - adminer - model=1
