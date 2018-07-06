@@ -24,15 +24,13 @@
                                                 <a href="{:Url('Jurisdiction/insert')}">新增</a>
                                             </div>
                                             <div class="col-xs-6">
-                                            	<form action="{:Url('Jurisdiction/search')}" method="post">
-	                                                <select id="search_name">
-	                                                    {volist name="list_fields" id="vo"}
-	                                                    	<option value="{$vo}">{$vo}</option>
-	                                                    {/volist}
-	                                                </select>
-	                                                <input type="text" id="search_value">
-	                                                <input type="submit" value="搜索" />
-                                                </form>
+                                            	<select id="search_name">
+                                                    {volist name="list_fields" id="vo"}
+                                                    	<option value="{$vo}">{$vo}</option>
+                                                    {/volist}
+                                                </select>
+                                                <input type="text" id="search_value" />
+                                                <button onclick="return search();">搜索</button>
                                             </div>
                                         </div>
                                         <thead>

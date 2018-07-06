@@ -49,7 +49,7 @@ class Jurisdiction extends Base
             return json($result);
     	}else if(Request::instance()->isGet()){
     		$group_id = Request::instance()->param('group_id');
-    		$info = $this->groupL->getInfo($group_id);
+    		$info = $this->groupL->getInfo($group_id, 'getData');
 	        $menu = Cookie::get('menu');
 
 	        $this->assign('info', $info);
@@ -69,7 +69,7 @@ class Jurisdiction extends Base
     public function search(){
     	if(Request::instance()->isGet()){
     		$get_data = Request::instance()->param();
-    		if(empty($get_data['page'])) $get_data['page'] = 0;
+    		if(empty($get_data['page'])) $get_data['page'] = 1;
     		$data = $this->groupL->getGroup($get_data, $get_data['page']);
     		$count = $this->groupL->getCountGroup();
         	$list_fields = $this->groupL->getFieldsGroup();

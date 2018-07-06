@@ -1,92 +1,114 @@
 <?php
 namespace app\adminer\Logic;
 
-use think\Controller;
+use app\adminer\logic\Base;
 use think\Db;
 use think\Session;
 use think\Cookie;
+use think\Config;
+use app\adminer\model\AdminUser as AdminUserModel;
 use app\adminer\model\AdminGroup as AdminGroupModel;
-use app\adminer\model\AdminMenu as AdminMenuModel;
+use app\adminer\model\ViewAdminUser as ViewAdminUserModel;
 
-
-class User extends Controller
+class User extends Base
 {
-	public function initialize(){
-		parent::initialize();
-
+	public function __construct(){
+		parent::__construct();
 	}
 
-    public function getGroup(){
-        $groupM = new AdminGroupModel();
-        $data = $groupM->order('group_id desc')->paginate(10);
-        $page = $data->render();
-        $data = toArray($data);
+	//包含了查询
+    public function getUser($where = array(), $operation = 'toArray', $page = 0, $limit = 10){
+        $UserM = new ViewAdminUserModel();
+        if(!empty($where['search_value'])){
+        	//需要二次查表的方法，入口
+        	if($where['search_name'] == 'jurisdiction'){
 
-        $menu = Cookie::get('menu_list');
-        foreach($menu as $key => $value){
-            $temp_menu[$value['id']] = $value;
+        	}else{
+        		$data = $UserM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->order('uid desc')->paginate($limit);
+        	}
+        }else{
+        	$data = $UserM->order('uid desc')->paginate($limit);
         }
-        foreach($data as $key => $value){
-            if(empty($value['jurisdiction'])) continue;
-            $array = explode(',', rtrim($value['jurisdiction'], ','));
-            $str = '';
-            foreach($array as $k => $val){
-                
-                $str .= $temp_menu[$val]['name'].',';
-            }
-            $data[$key]['jurisdiction'] = $str;
-        }
+
+        $page = $data->render();
+        if($operation == 'toArray')
+        	$data = toArray($data);
+        else
+        	$data = getData($data);
+
         $result = array('data' => $data, 'page' => $page);
         return $result;
     }
 
-    public function getCountGroup(){
-        $groupM = new AdminGroupModel();
-        $data = $groupM->count();
+    public function getCountUser(){
+        $UserM = new AdminUserModel();
+        $data = $UserM->count();
         return $data;
     }
 
-    public function getFieldsGroup(){
-        $groupM = new AdminGroupModel();
-        $data = $groupM->getTableFields();
+    public function getFieldsUser($operation = 'hidden'){
+        $UserM = new ViewAdminUserModel();
+        $data = $UserM->getTableFields();
+        if($operation == 'hidden'){
+        	$hidden = $UserM->hidden;
+        	$temp = 1;
+        }else if($operation == 'insert_hidden'){
+        	$hidden = $UserM->insert_hidden;
+        	$temp = 1;
+        }else if($operation == 'update_hidden'){
+        	$hidden = $UserM->update_hidden;
+        	$temp = 1;
+        }else if($operation == 'all'){
+        	$temp = 0;
+        }dump($hidden);dump($data);
+        if($temp){
+	        $data = array_flip($data);
+	        foreach($hidden as $key => $value){
+	        	if(isset($data[$value])) unset($data[$value]);
+	        }
+	        $data = array_flip($data);
+        }
+        dump($data);
         return $data;
     }
 
-    public function getInfo($id){
-        $groupM = new AdminGroupModel();
-        $data = $groupM::get($id);
-        if($data) return $data->toArray();
+    public function getInfo($id, $operation){
+        $UserM = new AdminUserModel();
+        $data = $UserM::get($id);
+        if($operation == 'getData')
+        	return $data->getData();
+        else
+        	return $data->toArray();
     }
 
     public function insert($data){
-        $groupM = new AdminGroupModel();
-        $result = $this->validate($data, 'Jurisdiction.insert');
+        $UserM = new AdminUserModel();
+        $data['reg_time'] = time();
+        $result = $this->validate($data, 'User.insert');
         if($result === true){
             $insert_data = $data;
-            $insert_data['jurisdiction'] = '';
-            foreach($data as $key => $value){
-                if(strpos($key, 'id-') !== false){
-                    $insert_data['jurisdiction'] .= ltrim($key, 'id-') . ',';
-                    unset($insert_data[$key]);
-                }
-            }
-            $groupM->data($insert_data);
-            $groupM->save();
-            $group_id = $groupM->group_id;
-            if($group_id)
-                return ['code' => 'success', 'group_id' => $group_id];
+            $UserM->data($insert_data);
+            $UserM->save();
+            $uid = $UserM->uid;
+            if($uid)
+                return ['code' => 'success', 'uid' => $uid];
             else
                 return ['code' => 'error', 'str' => '添加失败'];
-            // $groupM->data($insert_data);
-            // $groupM->save();
         }else{
             return ['code' => 'error', 'str' => $result];
         }
     }
 
     public function update($data){
-        $groupM = new AdminGroupModel();
-        $result = $this->validate($data, 'Jurisdiction.update');
+        $UserM = new AdminUserModel();
+        $keys = array_keys($data);
+        foreach($keys as $key => $value){
+        	if(strpos($value, 'id-') !== false){
+        		$data['jurisdiction'] = 1;
+        		break;
+        	}
+        }
+        $result = $this->validate($data, 'User.update');
         if($result === true){
             $insert_data = $data;
             $insert_data['jurisdiction'] = '';
@@ -96,39 +118,29 @@ class User extends Controller
                     unset($insert_data[$key]);
                 }
             }
-            $group_id = $insert_data['group_id'];
-            unset($insert_data['group_id']);
-            $result = $groupM->where('group_id', $group_id)->update($insert_data);
-            
+            $uid = $insert_data['uid'];
+            unset($insert_data['uid']);
+            $result = $UserM->where('uid', $uid)->update($insert_data);
+
             if($result)
                 return ['code' => 'success'];
             else
                 return ['code' => 'error', 'str' => '添加失败'];
-            // $groupM->data($insert_data);
-            // $groupM->save();
+            // $UserM->data($insert_data);
+            // $UserM->save();
         }else{
             return ['code' => 'error', 'str' => $result];
         }
     }
 
     public function delete($data){
-        $groupM = new AdminGroupModel();
-        $result = $this->validate($data, 'Jurisdiction.delete');
+        $UserM = new AdminUserModel();
+        $result = $this->validate($data, 'User.delete');
         if($result === true){
-            $groupM::destroy($data);
+            $UserM::destroy($data);
             return ['code' => 'success'];
         }else{
             return ['code' => 'error', 'str' => $result];
-        }
-    }
-
-    public function findGroup($where){
-        $groupM = new AdminGroupModel();
-        $result = $groupM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->order('group_id desc')->select();
-        if($result){
-            return ['code' => 'success', 'data' => $result];
-        }else{
-            return ['code' => 'error'];
         }
     }
 

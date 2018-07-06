@@ -17,8 +17,8 @@ class AdminGroup extends Model
 	public function getJurisdictionAttr($value, $data){
 		$menu = Cookie::get('menu_list');
 		$array = explode(',', rtrim($data['jurisdiction'], ','));
-		$str = '';dump($data);
-		foreach($array as $key => $val){
+		$str = '';
+		foreach($array as $key => $val){dump($val);
 			$str .= $menu[$val]['name'].',';
 		}
 		return $str;

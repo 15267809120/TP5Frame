@@ -9,8 +9,10 @@ use app\adminer\model\AdminMenu as AdminMenuModel;
 
 class Base extends Controller
 {
+	public $action = '';
 	public function __construct(){
 		parent::__construct();
+		$this->action = strtolower($_SERVER['PATH_INFO']);dump(Session::get());
 	}
 
 	public function isLogin(){
@@ -21,10 +23,11 @@ class Base extends Controller
 	public function isPower(){
 		$power = Session::get('power');
 		$menu = Cookie::get('menu_list');
-		$action = $_SERVER['PATH_INFO'];
+		//首页都可以进入
+		if(strpos($this->action, '/adminer/index/index')) return ;
 		foreach($menu as $key => $value){
-			if(!empty($value['link']) && strpos($action, $value['link']) !== false){
-				if(!array_search($value['id'], $power)) $this->redirect(Url('Index/index'));
+			if(!empty($value['link']) && strpos($this->action, $value['link']) !== false){
+				if(!array_search($value['id'], $power)) $this->redirect(url('Index/index'));
 			}
 		}
 		
@@ -78,7 +81,7 @@ class Base extends Controller
 	public function getMenuInfo(){
 	    $menu = Cookie::get('menu_list');
 	    foreach($menu as $key => $value){
-	        if($value['link'] && strpos($_SERVER['PATH_INFO'], $value['link']) !== false){
+	        if($value['link'] && strpos($this->action, $value['link']) !== false){
 	            Session::set('menu_info', $value);
 	            Session::set('p_menu', $menu[$value['pid']]);
 	            break;
@@ -90,7 +93,7 @@ class Base extends Controller
 	public function getPathInfo(){
 	    $menu = Cookie::get('menu_list');
 	    foreach($menu as $key => $value){
-	        if($value['link'] && strpos($_SERVER['PATH_INFO'], $value['link']) !== false){
+	        if($value['link'] && strpos($this->action, $value['link']) !== false){
 	            $p_menu_id = $value['pid'];
 	        }
 	    }

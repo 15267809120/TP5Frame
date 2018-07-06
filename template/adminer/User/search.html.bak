@@ -21,10 +21,10 @@
                                     <table id="example1" class="table table-bordered table-striped">
                                         <div class="row">
                                             <div class="col-xs-2">
-                                                <a href="{:Url('User/insert')}">新增</a>
+                                                <a href="{:Url('Jurisdiction/insert')}">新增</a>
                                             </div>
                                             <div class="col-xs-6">
-                                            	<select id="search_name">
+                                                <select id="search_name">
                                                     {volist name="list_fields" id="vo"}
                                                     	<option value="{$vo}">{$vo}</option>
                                                     {/volist}
@@ -95,9 +95,10 @@
         });
         
     });
+    var id=1;
 
     function update_this(id){
-        var url = "{:Url('User/update')}";
+        var url = "{:Url('Jurisdiction/update')}";
         url = url.replace('.html','/uid/'+id);
         location.href=url;
     }
@@ -108,7 +109,7 @@
             btn: ['删除','取消'] //按钮
         }, function(){
             $.ajax({
-                url:"{:Url('User/delete')}",
+                url:"{:Url('Jurisdiction/delete')}",
                 datatype:'json',
                 type:'post',
                 data:'uid='+id,
@@ -127,7 +128,7 @@
     function search(){
     	var search_name = $('#search_name').val();
     	var search_value = $('#search_value').val();
-    	var url = "{:Url('User/search')}";
+    	var url = "{:Url('Jurisdiction/search')}";
         url = url.replace('.html','/search_name/'+search_name+'/search_value/'+search_value);
         location.href=url;
     }

@@ -19,9 +19,9 @@ class Login extends Base
     	if($result === true){
     		$result_data = $admin_user::where($where)->find();
             if($result_data){
-                $result_data = $result_data->toArray();
+                $result_data = $result_data->toArray();dump($result_data);
                 Session::set('user', $result_data);
-                Session::set('power', explode(',', ltrim($result_data['jurisdiction'], ',')));
+                Session::set('power', explode(',', rtrim($result_data['jurisdiction'], ',')));
                 return ['code' => 'success'];
             }else{
                 return ['code' => 'null', 'str' => '账户或密码错误'];

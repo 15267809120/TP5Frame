@@ -19,7 +19,7 @@ class Jurisdiction extends Validate
 	];
 
 	protected $scene = [
-		'insert' => ['name', 'jurisdiction'],
+		'insert' => ['name'],
 		'update' => ['group_id', 'name', 'jurisdiction'],
 		'delete' => ['group_id'],
 	];

@@ -13,7 +13,7 @@ class AdminUser extends Model
 	}
 	
 	public function getRegTimeAttr($value, $data){
-		return date('Y-m-d H:i:s', $data['reg_time']);
+		return strtotime($data['reg_time']);
 	}
 
 	

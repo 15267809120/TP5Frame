@@ -26,7 +26,7 @@
                                     {volist name="list_fields" id="vo"}
                                         <div class="form-group">
                                             <label for="{$vo}">{$vo}</label>
-                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="" placeholder="请输入{$vo}">
+                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" placeholder="请输入{$vo}">
                                         </div>
                                     {/volist}
                                         <div class="form-group">
@@ -44,13 +44,22 @@
                                                             <input type="checkbox" name="id-{$v.id}" value="1" />
                                                             {$v.name}
                                                         </label>
+                                                        {if condition="!empty($v['zlist'])"}
+		                                                    <div style="text-indent:8em;">
+		                                                        {volist name="v['zlist']" id="vl"}
+		                                                        <label>
+		                                                            <input type="checkbox" name="id-{$vl.id}" value="1" />
+		                                                            {$vl.name}
+		                                                        </label>
+		                                                        {/volist}
+		                                                    </div>
+		                                                {/if}
                                                         {/volist}
                                                     </div>
                                                 {/if}
                                                 <div style="margin-bottom: 30px;"></div>
                                             {/volist}
                                             </div>
-                                            
                                         </div>
 
                                     </div><!-- /.box-body -->
@@ -70,10 +79,12 @@
         <script type="text/javascript">
             function ajax_submit(){
                 var name = $('#name').val();
+                var get_data = $('#form').serialize();
                 var error = '';
                 if(name == '') error = '请输入权限组名字';
+                if(get_data.indexOf('id-') === -1) error = '请选择权限';
                 if(error != ''){
-                    layer.msg('请输入权限组名称');
+                    layer.msg(error);
                     return false;
                 }
                 $.ajax({
@@ -84,6 +95,8 @@
                     success : function (result){
                         if(result.code == 'success'){
                             location.href="{:Url('Jurisdiction/grouplist')}";
+                        }else if(result.code == 'error'){
+                        	layer.msg(result.str);
                         }
                     }
                 })

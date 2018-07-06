@@ -1,13 +1,13 @@
 <?php
 namespace app\adminer\Logic;
 
-use think\Controller;
+use app\adminer\logic\Base;
 use think\Db;
 use think\Session;
 use app\adminer\validate\Config as ConfigValidate;
 use app\adminer\model\Config as ConfigModel;
 
-class Config extends Controller
+class Config extends Base
 {
 	public function initialize(){
 		parent::initialize();

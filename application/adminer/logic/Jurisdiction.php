@@ -1,7 +1,7 @@
 <?php
 namespace app\adminer\Logic;
 
-use think\Controller;
+use app\adminer\logic\Base;
 use think\Db;
 use think\Session;
 use think\Cookie;
@@ -10,15 +10,14 @@ use app\adminer\model\ViewAdminUser as ViewAdminGroupModel;
 use app\adminer\model\AdminMenu as AdminMenuModel;
 use app\adminer\model\AdminGroup as AdminGroupModel;
 
-class Jurisdiction extends Controller
+class Jurisdiction extends Base
 {
-	public function initialize(){
-		parent::initialize();
-
+	public function __construct(){
+		parent::__construct();
 	}
 
 	//包含了查询
-    public function getGroup($where = array(), $page = 0, $limit = 10){
+    public function getGroup($where = array(), $operation = 'toArray', $page = 0, $limit = 10){
         $groupM = new AdminGroupModel();
         if(!empty($where['search_value'])){
         	//需要二次查表的方法，入口
@@ -26,7 +25,7 @@ class Jurisdiction extends Controller
         		$menuM = new AdminMenuModel();
         		$result = $menuM->where('name', 'like', '%'.$where['search_value'].'%')->select();
         		$result = toArray($result);
-        		if(count($result) > 0){
+        		if($result){
         			$where_str = '';
         			foreach($result as $key => $value){
         				$temp_array[$key] =$value['id'];
@@ -58,12 +57,25 @@ class Jurisdiction extends Controller
         	$data = $groupM->order('group_id desc')->paginate($limit);
         }
 
-        //dump($data);
         $page = $data->render();
-        $data = toArray($data);
+        if($operation == 'toArray')
+        	$data = toArray($data);
+        else
+        	$data = getData($data);
 
         $result = array('data' => $data, 'page' => $page);
         return $result;
+    }
+
+	public function getTotalGroup($operation = 'toArray'){
+        $groupM = new AdminGroupModel();
+        $data = $groupM::all();
+        if($operation == 'toArray'){
+        	$data = toArray($data);
+        }else{
+        	$data = getData($data);
+        }
+        return $data;
     }
 
     public function getCountGroup(){
@@ -78,14 +90,24 @@ class Jurisdiction extends Controller
         return $data;
     }
 
-    public function getInfo($id){
+    public function getInfo($id, $operation){
         $groupM = new AdminGroupModel();
         $data = $groupM::get($id);
-        if($data) return $data->toArray();
+        if($operation == 'getData')
+        	return $data->getData();
+        else
+        	return $data->toArray();
     }
 
     public function insert($data){
         $groupM = new AdminGroupModel();
+        $keys = array_keys($data);
+        foreach($keys as $key => $value){
+        	if(strpos($value, 'id-') !== false){
+        		$data['jurisdiction'] = 1;
+        		break;
+        	}
+        }
         $result = $this->validate($data, 'Jurisdiction.insert');
         if($result === true){
             $insert_data = $data;
@@ -103,8 +125,6 @@ class Jurisdiction extends Controller
                 return ['code' => 'success', 'group_id' => $group_id];
             else
                 return ['code' => 'error', 'str' => '添加失败'];
-            // $groupM->data($insert_data);
-            // $groupM->save();
         }else{
             return ['code' => 'error', 'str' => $result];
         }
@@ -112,6 +132,13 @@ class Jurisdiction extends Controller
 
     public function update($data){
         $groupM = new AdminGroupModel();
+        $keys = array_keys($data);
+        foreach($keys as $key => $value){
+        	if(strpos($value, 'id-') !== false){
+        		$data['jurisdiction'] = 1;
+        		break;
+        	}
+        }
         $result = $this->validate($data, 'Jurisdiction.update');
         if($result === true){
             $insert_data = $data;

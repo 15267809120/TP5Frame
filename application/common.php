@@ -33,3 +33,10 @@ function getData($array){
 	}
 	return $data;
 }
+
+function removeFields($get_data, $fields){
+	foreach($fields as $key => $value){
+		if(isset($get_data[$value])) $data[$value] = $get_data[$value];
+	}
+	return $data;
+}

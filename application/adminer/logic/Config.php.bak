@@ -1,7 +1,7 @@
 <?php
 namespace app\adminer\Logic;
 
-use think\Controller;
+use app\adminer\logic\Base;
 use think\Db;
 use think\Session;
 use app\adminer\validate\Config as ConfigValidate;
@@ -27,7 +27,7 @@ class Config extends Controller
 
     public function updateConfig($where = array()){
         $configM = new ConfigModel();
-        foreach($array as $key => $value){
+        foreach($where as $key => $value){
             $id = ltrim($key, 'id-');
             $update_data[$id]['id'] = $id;
             $update_data[$id]['value'] = $value;

@@ -26,7 +26,7 @@
                                     {volist name="list_fields" id="vo"}
                                         <div class="form-group">
                                             <label for="{$vo}">{$vo}</label>
-                                            <input type="text" class="form-control" id="{$vo}" value="{$info[$vo]}" name="{$info[$vo]}" placeholder="请输入{$vo}">
+                                            <input type="text" class="form-control" id="{$vo}" name="{$info[$vo]}" placeholder="请输入{$vo}">
                                         </div>
                                     {/volist}
                                         <div class="form-group">

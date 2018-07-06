@@ -26,21 +26,18 @@ function getData($array){
 	$count = count($array);
 	if($count > 0){
 		foreach($array as $key => $value){
-			$data[$key] = $value->toArray();
+			$data[$key] = $value->getData();
 		}
 	}else{
 		$data = '';
 	}
 	return $data;
-	$count = count($array);
-	if($count == 1){
-		$data = $array->getData();
-	}else if($count > 1){
-		foreach($array as $key => $value){
-			$data[$key] = $value->getData();
-		}
-	}else if($count < 1){
-		$data = '';
+}
+
+function removeFields($get_data, $fields){
+	foreach($fields as $key => $value){
+		if(isset($get_data[$value])) $data[$value] = $get_data[$value];
 	}
+	dump($get_data);dump($fields);dump($data);
 	return $data;
 }
