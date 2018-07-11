@@ -34,7 +34,7 @@ class User extends Validate
 
 	protected $scene = [
 		'insert' => ['username', 'nickname', 'password', 'group', 'reg_time'],
-		'update' => ['uid', 'username', 'nickname', 'password', 'group', 'reg_time'],
+		'update' => ['uid', 'username', 'nickname', 'password', 'group'],
 		'delete' => ['uid'],
 	];
 }

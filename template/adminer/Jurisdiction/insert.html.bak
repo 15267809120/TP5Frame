@@ -95,8 +95,9 @@
                     success : function (result){
                         if(result.code == 'success'){
                             location.href="{:Url('Jurisdiction/grouplist')}";
-                        }else if(result.code == 'error')
+                        }else if(result.code == 'error'){
                         	layer.msg(result.str);
+                        }
                     }
                 })
                 return false;

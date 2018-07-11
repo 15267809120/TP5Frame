@@ -10,6 +10,10 @@ class AdminGroup extends Model
 	protected $pk = 'group_id';
 	protected $resultSetType = '';
 	
+	//新增
+	public $insert_hidden = ['group_id','jurisdiction'];
+	public $update_hidden = ['group_id','jurisdiction'];
+	
 	protected function initialize(){
 		parent::initialize();
 	}
@@ -17,9 +21,9 @@ class AdminGroup extends Model
 	public function getJurisdictionAttr($value, $data){
 		$menu = Cookie::get('menu_list');
 		$array = explode(',', rtrim($data['jurisdiction'], ','));
-		$str = '';
-		foreach($array as $key => $val){dump($val);
-			$str .= $menu[$val]['name'].',';
+		$str = '';dump($array);dump($menu);
+		foreach($array as $key => $val){
+			if(!empty($menu[$val])) $str .= $menu[$val]['name'].',';
 		}
 		return $str;
 	}

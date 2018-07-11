@@ -1,0 +1,16 @@
+<?php
+namespace app\adminer\model;
+
+use think\Model;
+
+class HomeMenu extends Model
+{
+	protected $pk = 'uid';
+	protected $resultSetType = '';
+	
+	protected function initialize(){
+		parent::initialize();
+	}
+
+	
+}

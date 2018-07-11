@@ -40,20 +40,20 @@
                                                 {if condition="!empty($vo['zlist'])"}
                                                     <div style="text-indent:4em;">
                                                         {volist name="vo['zlist']" id="v"}
-                                                        <label>
-                                                            <input type="checkbox" name="id-{$v.id}" value="1" />
-                                                            {$v.name}
-                                                        </label>
-                                                        {if condition="!empty($v['zlist'])"}
-		                                                    <div style="text-indent:8em;">
-		                                                        {volist name="v['zlist']" id="vl"}
-		                                                        <label>
-		                                                            <input type="checkbox" name="id-{$vl.id}" value="1" />
-		                                                            {$vl.name}
-		                                                        </label>
-		                                                        {/volist}
-		                                                    </div>
-		                                                {/if}
+	                                                        <label>
+	                                                            <input type="checkbox" name="id-{$v.id}" value="1" />
+	                                                            {$v.name}
+	                                                        </label>
+	                                                        {if condition="!empty($v['zlist'])"}
+			                                                    <div style="text-indent:8em;">
+			                                                        {volist name="v['zlist']" id="vl"}
+			                                                        <label>
+			                                                            <input type="checkbox" name="id-{$vl.id}" value="1" />
+			                                                            {$vl.name}
+			                                                        </label>
+			                                                        {/volist}
+			                                                    </div>
+			                                                {/if}
                                                         {/volist}
                                                     </div>
                                                 {/if}

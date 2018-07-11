@@ -46,22 +46,17 @@ class User extends Base
         return $data;
     }
 
-    public function getFieldsUser($operation = 'hidden'){
+    public function getFieldsUser($operation = 'all'){
         $UserM = new ViewAdminUserModel();
         $data = $UserM->getTableFields();
-        if($operation == 'hidden'){
-        	$hidden = $UserM->hidden;
-        	$temp = 1;
+        if($operation == 'list_hidden'){
+        	$hidden = $UserM->list_hidden;
         }else if($operation == 'insert_hidden'){
         	$hidden = $UserM->insert_hidden;
-        	$temp = 1;
         }else if($operation == 'update_hidden'){
         	$hidden = $UserM->update_hidden;
-        	$temp = 1;
-        }else if($operation == 'all'){
-        	$temp = 0;
         }
-        if($temp){
+        if($operation != 'all'){
 	        $data = array_flip($data);
 	        foreach($hidden as $key => $value){
 	        	if(isset($data[$value])) unset($data[$value]);
@@ -72,7 +67,7 @@ class User extends Base
         return $data;
     }
 
-    public function getInfo($id, $operation){
+    public function getInfo($id, $operation = 'toArray'){
         $UserM = new AdminUserModel();
         $data = $UserM::get($id);
         if($operation == 'getData')
@@ -101,23 +96,9 @@ class User extends Base
 
     public function update($data){
         $UserM = new AdminUserModel();
-        $keys = array_keys($data);
-        foreach($keys as $key => $value){
-        	if(strpos($value, 'id-') !== false){
-        		$data['jurisdiction'] = 1;
-        		break;
-        	}
-        }
         $result = $this->validate($data, 'User.update');
         if($result === true){
             $insert_data = $data;
-            $insert_data['jurisdiction'] = '';
-            foreach($data as $key => $value){
-                if(strpos($key, 'id-') !== false){
-                    $insert_data['jurisdiction'] .= ltrim($key, 'id-') . ',';
-                    unset($insert_data[$key]);
-                }
-            }
             $uid = $insert_data['uid'];
             unset($insert_data['uid']);
             $result = $UserM->where('uid', $uid)->update($insert_data);
@@ -126,8 +107,6 @@ class User extends Base
                 return ['code' => 'success'];
             else
                 return ['code' => 'error', 'str' => '添加失败'];
-            // $UserM->data($insert_data);
-            // $UserM->save();
         }else{
             return ['code' => 'error', 'str' => $result];
         }

@@ -35,10 +35,10 @@
                                         </div>
                                         <thead>
                                             <tr>
-                                            {volist name="list_fields" id="vo"}
-                                                <th>{$vo}</th>
-                                            {/volist}
-                                                <th>操作</th>
+	                                            {volist name="list_fields" id="vo"}
+	                                                <th>{$vo}</th>
+	                                            {/volist}
+	                                            <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -95,7 +95,6 @@
         });
         
     });
-    var id=1;
 
     function update_this(id){
         var url = "{:Url('Jurisdiction/update')}";

@@ -8,12 +8,14 @@ use app\adminer\logic\Login as LoginLogic;
 
 class Login extends Controller
 {
+	//登出的地址
+	public $logout = '';
 	public function __construct(){
 		parent::__construct();
+		$this->logout = url('Login/login');
 	}
 
-    public function Login()
-    {
+    public function Login(){
         if(Request::instance()->isAjax()){
             $get_data = Request::instance()->post();
             
@@ -26,6 +28,6 @@ class Login extends Controller
 
     public function Logout(){
         Session::clear();
-        $this->redirect(url('Login/Login'));
+        $this->redirect($this->logout);
     }
 }

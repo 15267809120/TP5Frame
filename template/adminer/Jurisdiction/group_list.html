@@ -35,17 +35,17 @@
                                         </div>
                                         <thead>
                                             <tr>
-                                            {volist name="list_fields" id="vo"}
-                                                <th>{$vo}</th>
-                                            {/volist}
-                                                <th>操作</th>
+	                                            {volist name="list_fields" id="vo"}
+	                                                <th>{$vo}</th>
+	                                            {/volist}
+	                                            <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {volist name="list" id="vo"}
                                             <tr>
-                                                {volist name="$vo" id="v"}
-                                                    <td>{$v}</td>
+                                                {volist name="list_fields" id="v"}
+                                                    <td>{$vo[$v]}</td>
                                                 {/volist}
                                                 <td>
                                                     <button class="btn btn-info btn-sm" onclick="return update_this('{$vo.group_id}');">修改</button>
@@ -115,6 +115,8 @@
                 success : function (result){
                     if(result.code == 'success'){
                         location.reload();
+                    }else{
+                    	layer.msg(result.str);
                     }
                 }
             })

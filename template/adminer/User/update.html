@@ -22,18 +22,19 @@
                                 </div>
                                 <!-- form start -->
                                 <form role="form" id="form">
+                                	<input type="hidden" name="uid" id="uid" value="{$info.uid}" />
                                     <div class="box-body">
-                                    {volist name="list_fields" id="vo"}
-                                        <div class="form-group">
-                                            <label for="{$vo}">{$vo}</label>
-                                            <input type="text" class="form-control" id="{$vo}" value="{$info[$vo]}" name="{$info[$vo]}" placeholder="请输入{$vo}">
-                                        </div>
-                                    {/volist}
+	                                    {volist name="list_fields" id="vo"}
+	                                        <div class="form-group">
+	                                            <label for="{$vo}">{$vo}</label>
+	                                            <input type="text" class="form-control" id="{$vo}" value="{$info[$vo]}" name="{$vo}" placeholder="请输入{$vo}">
+	                                        </div>
+	                                    {/volist}
                                         <div class="form-group">
                                             <label>Group</label>
                                             <select class="form-control" name="group" id="group">
                                             	{volist name="group" id="vo"}
-                                                	<option value="{$vo.group_id}">{$vo.name}</option>
+                                                	<option value="{$vo.group_id}" {if condition="$vo.group_id eq $info['group']"}selected="selected"{/if}>{$vo.name}</option>
                                                 {/volist}
                                             </select>
                                         </div>
@@ -52,11 +53,15 @@
         </div><!-- ./wrapper -->
         <script type="text/javascript">
             function ajax_submit(){
-                var name = $('#name').val();
-                var get_data = $('#form').serialize();
+                var username = $('#username').val();
+                var nickname = $('#nickname').val();
+                var password = $('#password').val();
+                var group = $('#group option:selected').val();
                 var error = '';
-                if(name == '') error = '请输入权限组名字';
-                if(get_data.indexOf('id-') === -1) error = '请选择权限';
+                if(username == '') error = '请输入管理员的账号';
+                if(nickname == '') error = '请输入管理员的昵称';
+                if(password == '') error = '请输入管理员的密码';
+                if(group == '') error = '选择管理员的权限组';
                 if(error != ''){
                     layer.msg(error);
                     return false;
@@ -70,6 +75,8 @@
                         console.log(result);
                         if(result.code == 'success'){
                             location.href="{:Url('User/userList')}";
+                        }else{
+                        	layer.msg(result.str);
                         }
                     }
                 })

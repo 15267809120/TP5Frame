@@ -1,0 +1,89 @@
+{include file="Public/header" /}
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                
+                {include file="Public/breadcrumb" /}
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-8">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">新增导航栏</h3>
+                                </div>
+                                <!-- form start -->
+                                <form role="form" id="form">
+                                    <div class="box-body">
+                                    {volist name="list_fields" id="vo"}
+                                        <div class="form-group">
+                                            <label for="{$vo}">{$vo}</label>
+                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" placeholder="请输入{$vo}">
+                                        </div>
+                                    {/volist}
+                                        <div class="form-group">
+                                            <label>pid</label>
+                                            <select class="form-control" name="pid" id="pid">
+                                            		<option value="0">空（没有上级）</option>
+                                            	{volist name="data_list" id="vo"}
+                                                	<option value="{$vo.id}">{$vo.name}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.box -->
+
+                        </div><!--/.col (left) -->
+                        
+                    </div>   <!-- /.row -->
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <script type="text/javascript">
+            function ajax_submit(){
+                var name = $('#name').val();
+                var sort = $('#sort').val();
+                var pid = $('#pid option:selected').val();
+                var error = '';
+                if(name == '') error = '请输入管理员账号';
+                if(pid == '') error = '请选择权限分组';
+                if(error != ''){
+                    layer.msg(error);
+                    return false;
+                }
+                $.ajax({
+                    url:"{:Url('Menu/insert')}",
+                    datatype:'json',
+                    type:'post',
+                    data:$('#form').serialize(),
+                    success : function (result){
+                        if(result.code == 'success'){
+                        	layer.msg('添加成功');
+							setTimeout(function(){location.reload();}, 0000);
+                        }else if(result.code == 'error'){
+                        	layer.msg(result.str);
+                        }
+                    }
+                })
+                return false;
+            }
+            
+            function alert_msg(){
+            	
+            }
+        </script>
+    {include file="Public/footer" /}
+    </body>
+</html>

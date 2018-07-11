@@ -19,7 +19,7 @@ class Login extends Base
     	if($result === true){
     		$result_data = $admin_user::where($where)->find();
             if($result_data){
-                $result_data = $result_data->toArray();dump($result_data);
+                $result_data = $result_data->toArray();
                 Session::set('user', $result_data);
                 Session::set('power', explode(',', rtrim($result_data['jurisdiction'], ',')));
                 return ['code' => 'success'];
@@ -29,5 +29,9 @@ class Login extends Base
     	}else{
     		return ['code' => 'error', 'str' => $result];
     	}
+    }
+    
+    public function inUserLog(){
+    	
     }
 }

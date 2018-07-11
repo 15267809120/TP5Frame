@@ -13,7 +13,7 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                         {volist name="menu" id="vo"}
-                        <li class="treeview {if condition='$vo.id eq $menu_info'}active{/if}">
+                        <li class="treeview {eq name='$vo.id' value='$menu_id'}active{/eq}">
                             <a href="#">
                                 <span>{$vo.name}</span>
                                 <i class="fa fa-angle-left pull-right"></i>

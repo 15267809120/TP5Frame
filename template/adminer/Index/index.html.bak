@@ -1,0 +1,101 @@
+
+{include file="Public/header" /}
+    <body class="skin-blue">
+        
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        主界面
+                        <small>控制面板</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="{:Url('Index/index')}"><i class="fa fa-dashboard"></i> 主界面</a></li>
+                        <li class="active">控制面板</li>
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+
+                    <!-- Main row -->
+                    <div class="row">
+                        <!-- Left col -->
+                        <section class="col-lg-6 connectedSortable"> 
+                            
+                            <!-- Map box -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <i class="fa fa-user"></i>
+                                    <h3 class="box-title">
+                                        访客信息
+                                    </h3>
+                                </div>
+                                <div class="box-body no-padding">
+
+                                    <div class="table-responsive">
+                                        <!-- .table - Uses sparkline charts-->
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>IP</th>
+                                                <th>访问时间</th>
+                                            </tr>
+                                            <tr>
+                                                <td>IP</td>
+                                                <td>访问时间</td>
+                                            </tr>
+                                        </table><!-- /.table -->
+                                    </div>
+                                </div><!-- /.box-body-->
+                            </div>
+                            <!-- /.box -->
+
+                        </section><!-- /.Left col -->
+                        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                        <section class="col-lg-6 connectedSortable">
+                            <!-- Map box -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <i class="fa fa-user"></i>
+                                    <h3 class="box-title">
+                                        访客流量
+                                    </h3>
+                                </div>
+                                <div class="box-body no-padding">
+
+                                    <div class="table-responsive">
+                                        <!-- .table - Uses sparkline charts-->
+                                        <table class="table table-striped">
+                                            <tr>
+                                                <th>日期</th>
+                                                <th>访客人数</th>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td>1709</td>
+                                                <td>947</td>
+                                            </tr>
+                                        </table><!-- /.table -->
+                                    </div>
+                                </div><!-- /.box-body-->
+                            </div>
+                            <!-- /.box -->
+                            
+                        </section><!-- right col -->
+                    </div><!-- /.row (main row) -->
+
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+
+        <!-- add new calendar event modal -->
+
+
+    {include file="Public/footer" /}
+    </body>
+</html>

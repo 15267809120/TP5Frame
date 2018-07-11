@@ -12,9 +12,9 @@ class Index extends Base
 		$this->IndexL = new IndexLogic();
 	}
 
-    public function index(){dump($p_menu_id);
+    public function index(){
     	// $this->IndexL->getUserLog();
-    	// $this->IndexL->getUser();
+//    	 $this->IndexL->getUser();
         return $this->fetch();
     }
 }

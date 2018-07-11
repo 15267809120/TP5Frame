@@ -18,26 +18,53 @@
                             <!-- general form elements -->
                             <div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">修改管理员</h3>
+                                    <h3 class="box-title">更新权限组</h3>
                                 </div>
                                 <!-- form start -->
                                 <form role="form" id="form">
                                     <div class="box-body">
-                                    {volist name="list_fields" id="vo"}
+                                    	{volist name="list_fields" id="vo"}
+	                                        <div class="form-group">
+	                                            <label for="{$vo}">{$vo}</label>
+	                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="{$info.name}" placeholder="请输入{$vo}">
+	                                        </div>
+                                        {/volist}
                                         <div class="form-group">
-                                            <label for="{$vo}">{$vo}</label>
-                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" placeholder="请输入{$vo}">
+                                            <label for="jurisdiction">jurisdiction</label>
+                                            <div class="checkbox">
+                                            {volist name="menu_list" id="vo"}
+                                                <label>
+                                                    <input type="checkbox" name="id-{$vo.id}" value="1" {if condition="strpos($info['jurisdiction'], $vo['id']) !== false"}checked{/if} />
+                                                    {$vo.name}
+                                                </label>
+                                                {if condition="!empty($vo['zlist'])"}
+                                                    <div style="text-indent:4em;">
+                                                        {volist name="vo['zlist']" id="v"}
+                                                        <label>
+                                                            <input type="checkbox" name="id-{$v.id}" value="1" {if condition="strpos($info['jurisdiction'], $v['id']) !== false"}checked{/if} />
+                                                            {$v.name}
+                                                        </label>
+                                                        {if condition="!empty($v['zlist'])"}
+		                                                    <div style="text-indent:8em;">
+		                                                        {volist name="v['zlist']" id="vl"}
+		                                                        <label>
+		                                                            <input type="checkbox" name="id-{$vl.id}" value="1" {if condition="strpos($info['jurisdiction'], $vl['id']) !== false"}checked{/if} />
+		                                                            {$vl.name}
+		                                                        </label>
+		                                                        {/volist}
+		                                                    </div>
+		                                                {/if}
+                                                        {/volist}
+                                                    </div>
+                                                {/if}
+                                                <div style="margin-bottom: 30px;"></div>
+                                            {/volist}
+                                            </div>
+                                            <input type="hidden" name="group_id" value="{$info.group_id}" />
                                         </div>
-                                    {/volist}
-                                        <div class="form-group">
-                                            <label>Group</label>
-                                            <select class="form-control" name="group" id="group">
-                                            	{volist name="group" id="vo"}
-                                                	<option value="{$vo.group_id}">{$vo.name}</option>
-                                                {/volist}
-                                            </select>
-                                        </div>
+
                                     </div><!-- /.box-body -->
+
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
                                     </div>

@@ -23,11 +23,12 @@
                                 <!-- form start -->
                                 <form role="form" id="form">
                                     <div class="box-body">
-
-                                        <div class="form-group">
-                                            <label for="name">name</label>
-                                            <input type="text" class="form-control" id="name" name="name" value="{$info.name}" placeholder="请输入权限组名称">
-                                        </div>
+                                    	{volist name="list_fields" id="vo"}
+	                                        <div class="form-group">
+	                                            <label for="{$vo}">{$vo}</label>
+	                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="{$info.name}" placeholder="请输入{$vo}">
+	                                        </div>
+                                        {/volist}
                                         <div class="form-group">
                                             <label for="jurisdiction">jurisdiction</label>
                                             <div class="checkbox">
@@ -39,20 +40,20 @@
                                                 {if condition="!empty($vo['zlist'])"}
                                                     <div style="text-indent:4em;">
                                                         {volist name="vo['zlist']" id="v"}
-                                                        <label>
-                                                            <input type="checkbox" name="id-{$v.id}" value="1" {if condition="strpos($info['jurisdiction'], $v['id']) !== false"}checked{/if} />
-                                                            {$v.name}
-                                                        </label>
-                                                        {if condition="!empty($v['zlist'])"}
-		                                                    <div style="text-indent:8em;">
-		                                                        {volist name="v['zlist']" id="vl"}
-		                                                        <label>
-		                                                            <input type="checkbox" name="id-{$vl.id}" value="1" {if condition="strpos($info['jurisdiction'], $vl['id']) !== false"}checked{/if} />
-		                                                            {$vl.name}
-		                                                        </label>
-		                                                        {/volist}
-		                                                    </div>
-		                                                {/if}
+	                                                        <label>
+	                                                            <input type="checkbox" name="id-{$v.id}" value="1" {if condition="strpos($info['jurisdiction'], $v['id']) !== false"}checked{/if} />
+	                                                            {$v.name}
+	                                                        </label>
+	                                                        {if condition="!empty($v['zlist'])"}
+			                                                    <div style="text-indent:8em;">
+			                                                        {volist name="v['zlist']" id="vl"}
+			                                                        <label>
+			                                                            <input type="checkbox" name="id-{$vl.id}" value="1" {if condition="strpos($info['jurisdiction'], $vl['id']) !== false"}checked{/if} />
+			                                                            {$vl.name}
+			                                                        </label>
+			                                                        {/volist}
+			                                                    </div>
+			                                                {/if}
                                                         {/volist}
                                                     </div>
                                                 {/if}

@@ -19,11 +19,11 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             {if condition="!empty($vo['zlist'])"}
-                            <ul class="treeview-menu">
-                                {volist name="$vo['zlist']" id="v"}
-                                <li><a href="{$v.link}"><i class="fa fa-angle-double-right"></i> {$v.name}</a></li>
-                                {/volist}
-                            </ul>
+	                            <ul class="treeview-menu">
+	                                {volist name="$vo['zlist']" id="v"}
+	                                <li><a href="{$v.link}"><i class="fa fa-angle-double-right"></i> {$v.name}</a></li>
+	                                {/volist}
+	                            </ul>
                             {/if}
                         </li>
                         {/volist}

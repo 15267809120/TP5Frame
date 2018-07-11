@@ -13,8 +13,7 @@ class Index extends Base
 	}
 
     public function index(){
-    	// $this->IndexL->getUserLog();
-    	// $this->IndexL->getUser();
+
         return $this->fetch();
     }
 }

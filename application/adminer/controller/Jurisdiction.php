@@ -32,11 +32,9 @@ class Jurisdiction extends Base
             $result = $this->groupL->insert($get_data);
             return json($result);
         }
-        $list_fields = $this->groupL->getFieldsGroup();
+        $list_fields = $this->groupL->getFieldsGroup('insert_hidden');
         $menu = Cookie::get('menu');
-        //剔除掉非文本框的
-        unset($list_fields[0]);
-        unset($list_fields[2]);
+        
         $this->assign('list_fields', $list_fields);
         $this->assign('menu_list', $menu);
     	return $this->fetch();
@@ -49,9 +47,11 @@ class Jurisdiction extends Base
             return json($result);
     	}else if(Request::instance()->isGet()){
     		$group_id = Request::instance()->param('group_id');
+    		$list_fields = $this->groupL->getFieldsGroup('update_hidden');
     		$info = $this->groupL->getInfo($group_id, 'getData');
 	        $menu = Cookie::get('menu');
 
+			$this->assign('list_fields', $list_fields);
 	        $this->assign('info', $info);
 	        $this->assign('menu_list', $menu);
 	    	return $this->fetch();
@@ -71,13 +71,12 @@ class Jurisdiction extends Base
     		$get_data = Request::instance()->param();
     		if(empty($get_data['page'])) $get_data['page'] = 1;
     		$data = $this->groupL->getGroup($get_data, 'toArray', $get_data['page']);
-    		$count = $this->groupL->getCountGroup();
         	$list_fields = $this->groupL->getFieldsGroup();
         	
     		$this->assign('list', $data['data']);
     		$this->assign('page', $data['page']);
     		$this->assign('list_fields', $list_fields);
-    		$this->assign('count',$count);
+    		$this->assign('count',$data['count']);
     		return $this->fetch();
     	}
     }

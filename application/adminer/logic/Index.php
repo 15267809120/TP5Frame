@@ -12,11 +12,4 @@ class Index extends Base
 		parent::__construct();
 	}
 
-    public function isLogin(){
-        $user = Session('user');
-        if($this->action != '/adminer/login/login' || $this->action != '/adminer/login/login.html'){
-            if(empty($user)) $this->redirect(url('Login/login'));
-        }
-    }
-
 }

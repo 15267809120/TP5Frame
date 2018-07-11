@@ -10,6 +10,10 @@ class AdminGroup extends Model
 	protected $pk = 'group_id';
 	protected $resultSetType = '';
 	
+	//新增
+	public $insert_hidden = ['group_id','jurisdiction'];
+	public $update_hidden = ['group_id','jurisdiction'];
+	
 	protected function initialize(){
 		parent::initialize();
 	}
@@ -19,7 +23,7 @@ class AdminGroup extends Model
 		$array = explode(',', rtrim($data['jurisdiction'], ','));
 		$str = '';
 		foreach($array as $key => $val){
-			$str .= $menu[$val]['name'].',';
+			if(!empty($menu[$val])) $str .= $menu[$val]['name'].',';
 		}
 		return $str;
 	}

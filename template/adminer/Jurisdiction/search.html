@@ -35,10 +35,10 @@
                                         </div>
                                         <thead>
                                             <tr>
-                                            {volist name="list_fields" id="vo"}
-                                                <th>{$vo}</th>
-                                            {/volist}
-                                                <th>操作</th>
+	                                            {volist name="list_fields" id="vo"}
+	                                                <th>{$vo}</th>
+	                                            {/volist}
+	                                            <th>操作</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,6 +115,8 @@
                 success : function (result){
                     if(result.code == 'success'){
                         location.reload();
+                    }else{
+                    	layer.msg(result.str);
                     }
                 }
             })

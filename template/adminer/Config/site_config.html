@@ -23,12 +23,12 @@
                                 <!-- form start -->
                                 <form role="form" id="form">
                                     <div class="box-body">
-                                    {volist name="config_list" id="vo"}
-                                        <div class="form-group">
-                                            <label for="{$vo.name}">{$vo.name}</label>
-                                            <input type="text" class="form-control" id="{$vo.name}" name="id-{$vo.id}" value="{$vo.value}" placeholder="请输入{$vo.remark}">
-                                        </div>
-                                    {/volist}
+	                                    {volist name="config_list" id="vo"}
+	                                        <div class="form-group">
+	                                            <label for="{$vo.name}">{$vo.name}</label>
+	                                            <input type="text" class="form-control" id="{$vo.name}" name="id-{$vo.id}" value="{$vo.value}" placeholder="请输入{$vo.remark}">
+	                                        </div>
+	                                    {/volist}
                                     </div><!-- /.box-body -->
 
                                     <div class="box-footer">

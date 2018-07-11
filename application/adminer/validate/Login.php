@@ -26,7 +26,6 @@ class Login extends Validate
 		'group.max' 			=> '用户分组长度不能超过4个字符',
 		'reg_time.require' 		=> '注册时间不能为空',
 		'reg_time.max' 			=> '注册时间长度不能大于10个字符',
-
 	];
 
 	protected $scene = [

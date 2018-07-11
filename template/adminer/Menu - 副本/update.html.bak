@@ -1,0 +1,88 @@
+{include file="Public/header" /}
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                
+                {include file="Public/breadcrumb" /}
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-8">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">修改管理员信息</h3>
+                                </div>
+                                <!-- form start -->
+                                <form role="form" id="form">
+                                	<input type="hidden" name="id" id="id" value="{$info.id}" />
+                                    <div class="box-body">
+	                                    {volist name="list_fields" id="vo"}
+	                                        <div class="form-group">
+	                                            <label for="{$vo}">{$vo}</label>
+	                                            <input type="text" class="form-control" id="{$vo}" value="{$info[$vo]}" name="{$vo}" placeholder="请输入{$vo}">
+	                                        </div>
+	                                    {/volist}
+                                        <div class="form-group">
+                                            <label>Group</label>
+                                            <select class="form-control" name="pid" id="pid">
+                                            	{volist name="data_list" id="vo"}
+                                                	<option value="{$vo.id}" {if condition="$vo.id eq $info['pid']"}selected="selected"{/if}>{$vo.name}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.box -->
+
+                        </div><!--/.col (left) -->
+                        
+                    </div>   <!-- /.row -->
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <script type="text/javascript">
+            function ajax_submit(){
+                var username = $('#username').val();
+                var nickname = $('#nickname').val();
+                var password = $('#password').val();
+                var group = $('#group option:selected').val();
+                var error = '';
+                if(username == '') error = '请输入管理员的账号';
+                if(nickname == '') error = '请输入管理员的昵称';
+                if(password == '') error = '请输入管理员的密码';
+                if(group == '') error = '选择管理员的权限组';
+                if(error != ''){
+                    layer.msg(error);
+                    return false;
+                }
+                $.ajax({
+                    url:"{:Url('Menu/update')}",
+                    datatype:'json',
+                    type:'post',
+                    data:$('#form').serialize(),
+                    success : function (result){
+                        console.log(result);
+                        if(result.code == 'success'){
+                            location.href="{:Url('Menu/userList')}";
+                        }else{
+                        	layer.msg(result.str);
+                        }
+                    }
+                })
+                return false;
+            }
+        </script>
+    {include file="Public/footer" /}
+    </body>
+</html>

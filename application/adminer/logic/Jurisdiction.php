@@ -9,6 +9,7 @@ use think\Config;
 use app\adminer\model\ViewAdminUser as ViewAdminGroupModel;
 use app\adminer\model\AdminMenu as AdminMenuModel;
 use app\adminer\model\AdminGroup as AdminGroupModel;
+use app\adminer\model\AdminUser as AdminUserModel;
 
 class Jurisdiction extends Base
 {
@@ -47,14 +48,16 @@ class Jurisdiction extends Base
         				$total_count = ceil($total_count/ceil($count/$limit));
         			}
         			$data_temp = $groupM->paginate($total_count);
-        			return ['data' => $data, 'page' => $data_temp->render()];
+        			return ['data' => $data, 'page' => $data_temp->render(), 'count' => $count];
         		}
         		return ;
         	}else{
         		$data = $groupM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->order('group_id desc')->paginate($limit);
+        		$count = $groupM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->count();
         	}
         }else{
         	$data = $groupM->order('group_id desc')->paginate($limit);
+        	$count = $groupM->count();
         }
 
         $page = $data->render();
@@ -63,7 +66,7 @@ class Jurisdiction extends Base
         else
         	$data = getData($data);
 
-        $result = array('data' => $data, 'page' => $page);
+        $result = array('data' => $data, 'page' => $page, 'count' => $count);
         return $result;
     }
 
@@ -84,13 +87,28 @@ class Jurisdiction extends Base
         return $data;
     }
 
-    public function getFieldsGroup(){
+    public function getFieldsGroup($operation = 'all'){
         $groupM = new AdminGroupModel();
         $data = $groupM->getTableFields();
+        if($operation == 'insert_hidden'){
+        	$hidden = $groupM->insert_hidden;
+        }else if($operation == 'update_hidden'){
+        	$hidden = $groupM->update_hidden;
+        }else if($operation == 'hidden'){
+			$hidden = $groupM->hidden;
+        }
+        if($operation != 'all'){
+        	$data = array_flip($data);
+	        foreach($hidden as $key => $value){
+	        	if(isset($data[$value])) unset($data[$value]);
+	        }
+	        $data = array_flip($data);
+        }
+
         return $data;
     }
 
-    public function getInfo($id, $operation){
+    public function getInfo($id, $operation = 'toArray'){
         $groupM = new AdminGroupModel();
         $data = $groupM::get($id);
         if($operation == 'getData')
@@ -166,10 +184,17 @@ class Jurisdiction extends Base
 
     public function delete($data){
         $groupM = new AdminGroupModel();
+        $userM = new AdminUserModel();
         $result = $this->validate($data, 'Jurisdiction.delete');
         if($result === true){
-            $groupM::destroy($data);
-            return ['code' => 'success'];
+        	//先查询是否有管理员是该分组的
+        	$isSet = $userM::get(['group', $data['group_id']]);
+        	if($isSet){
+        		return ['code' => 'error', 'str' => '该分组下有管理员，无法删除'];
+        	}else{
+        		$groupM::destroy($data);
+            	return ['code' => 'success'];
+        	}
         }else{
             return ['code' => 'error', 'str' => $result];
         }

@@ -10,6 +10,7 @@ use app\adminer\logic\Jurisdiction as JurisdictionLogic;
 
 class User extends Base
 {
+	public $menu = '';
 	public function __construct(){
 		parent::__construct();
 		$this->userL = new UserLogic();
@@ -19,7 +20,7 @@ class User extends Base
     public function userList(){
         $data = $this->userL->getUser();
         $count = $this->userL->getCountUser();
-        $list_fields = $this->userL->getFieldsUser();
+        $list_fields = $this->userL->getFieldsUser('list_hidden');
 
 		$this->assign('list_fields', $list_fields);
 		$this->assign('list',$data['data']);
@@ -34,13 +35,11 @@ class User extends Base
             $result = $this->userL->insert($get_data);
             return json($result);
         }
-        $menu = Cookie::get('menu');
-        $group = $this->groupL->getTotalGroup();
-        $list_fields = $this->userL->getFieldsUser('save_hidden');
+        $group = $this->groupL->getTotalUser();
+        $list_fields = $this->userL->getFieldsUser('insert_hidden');
 		
 		$this->assign('group', $group);
         $this->assign('list_fields', $list_fields);
-        $this->assign('menu_list', $menu);
     	return $this->fetch();
     }
 
@@ -50,14 +49,11 @@ class User extends Base
             $result = $this->userL->update($get_data);
             return json($result);
     	}else if(Request::instance()->isGet()){
-    		$menu = Cookie::get('menu');
     		$group = $this->groupL->getTotalGroup();
     		$uid = Request::instance()->param('uid');
     		$list_fields = $this->userL->getFieldsUser('update_hidden');
     		$info = $this->userL->getInfo($uid, 'getData');
-	        $info = removeFields($info, $list_fields);//dump($list_fields);dump($info);
 	        
-			$this->assign('menu_list', $menu);
 			$this->assign('group', $group);
 			$this->assign('list_fields', $list_fields);
 	        $this->assign('info', $info);
@@ -79,7 +75,7 @@ class User extends Base
     		if(empty($get_data['page'])) $get_data['page'] = 1;
     		$data = $this->userL->getUser($get_data, 'toArray', $get_data['page']);
     		$count = $this->userL->getCountUser();
-        	$list_fields = $this->userL->getFieldsUser();
+        	$list_fields = $this->userL->getFieldsUser('list_hidden');
         	
     		$this->assign('list', $data['data']);
     		$this->assign('page', $data['page']);

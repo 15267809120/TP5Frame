@@ -1,6 +1,7 @@
 <?php
 namespace app\adminer\controller;
 
+use think\Request;
 use think\Controller;
 use app\adminer\logic\Base as BaseLogic;
 use think\Cookie;
@@ -8,8 +9,10 @@ use think\Session;
 
 class Base extends Controller
 {
+	public $action = '';
 	public function __construct(){
 		parent::__construct();
+		$this->action = strtolower($_SERVER['PATH_INFO']);
 
 		$this->baseL = new BaseLogic();
         //判断是否登录
@@ -20,15 +23,15 @@ class Base extends Controller
 		$this->getMenuInfo();
 		//判断是否拥有该内容的权限
 		$this->baseL->isPower();
+		
 	}
 
     public function menu(){
     	$this->baseL->getMenu();
     	$menu = Cookie::get('menu');
         $this->assign('menu', $menu);
-        $menu_id = $this->baseL->getPathInfo();
+        $menu_id = $this->baseL->getPathInfo($this->action);
         $this->assign('menu_id', $menu_id);
-
     }
 
     public function getMenuInfo(){

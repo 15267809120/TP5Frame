@@ -55,11 +55,11 @@
                 var username = $('#username').val();
                 var nickname = $('#nickname').val();
                 var password = $('#password').val();
-                var group = $('#group').val();
+                var group = $('#group option:selected').val();
                 var error = '';
-                if(username == '') error = '请输入管理员名字';
+                if(username == '') error = '请输入管理员账号';
                 if(nickname == '') error = '请输入管理员昵称';
-                if(password == '') error = '请输入管理员密码';
+                //if(password == '') error = '请输入管理员密码';
                 if(group == '') error = '请选择权限分组';
                 if(error != ''){
                     layer.msg(error);
