@@ -71,7 +71,7 @@
                     success : function (result){
                         if(result.code == 'success'){
                         	layer.msg('添加成功');
-							setTimeout(function(){location.reload();}, 2000);
+							setTimeout(function(){location.reload();}, 1000);
                         }else if(result.code == 'error'){
                         	layer.msg(result.str);
                         }

@@ -8,30 +8,25 @@
 .+AFw- - application - adminer - validate=1
 .+AFw- - template=1
 .+AFw- - template - adminer=1
-.+AFw- - template - adminer - Jurisdiction=1
+.+AFw- - template - adminer - Menu=1
 
 [Open Files]
 Active File Display Mode=1
-Active File Index=3
-Open File Line0=0
-Open File Line1=0
-Open File Line2=0
-Open File Line3=1752
-Open File Pos0=674
-Open File Pos1=139
-Open File Pos2=0
-Open File Pos3=3300
+Active File Index=2
+Open File Line0=377
+Open File Line1=1100
+Open File Line2=1956
+Open File Pos0=1545
+Open File Pos1=1971
+Open File Pos2=2572
 Open File Window Pos0=0,1,-1,-1,-1,-1,5,27,1631,769
 Open File Window Pos1=0,1,-1,-1,-1,-1,5,27,1631,769
 Open File Window Pos2=0,1,-1,-1,-1,-1,5,27,1631,769
-Open File Window Pos3=0,1,-1,-1,-1,-1,5,27,1631,769
-Open File0=.+AFw-application+AFw-adminer+AFw-controller+AFw-Menu.php
-Open File1=.+AFw-application+AFw-adminer+AFw-logic+AFw-Menu.php
-Open File2=.+AFw-application+AFw-adminer+AFw-model+AFw-Menu.php
-Open File3=.+AFw-template+AFw-adminer+AFw-Menu+AFw-insert.html
-Open File4=
+Open File0=.+AFw-application+AFw-adminer+AFw-controller+AFw-SinglePage.php
+Open File1=.+AFw-application+AFw-adminer+AFw-logic+AFw-Base.php
+Open File2=D:+AFw-WWW+AFw-temp+AFw-index.html
+Open File3=
 Remember Files=1
 
 [Project Information]
-Project Start=E2070700020003000E000000180000001B
-
+Project Start=E2070700050006000A0010002400000039

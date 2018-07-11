@@ -21,7 +21,7 @@ class Base extends Controller
 		parent::__construct();
 		$request = Request::instance();
 		//开发的时候，可关闭$this->path_info，取消权限控制
-		$this->path_info = strtolower($_SERVER['PATH_INFO']);//dump(Session::get());
+		//$this->path_info = strtolower($_SERVER['PATH_INFO']);//dump(Session::get());
 		$this->no_authority = url('Index/index');
 		$this->is_login = url('Login/login');
 	}
@@ -97,7 +97,6 @@ class Base extends Controller
 	            break;
 	        }
 	    }
-	    
 	}
 	
 	public function getPathInfo($action){
