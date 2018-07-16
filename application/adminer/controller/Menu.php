@@ -38,6 +38,7 @@ class Menu extends Base
             return json($result);
         }
         $data_list = $this->menuL->getTotalMenu();
+        $data_list = $this->menuL->getClassList($data_list);
         $list_fields = $this->menuL->getFieldsMenu('insert_hidden');
 		
 		$this->assign('data_list', $data_list);

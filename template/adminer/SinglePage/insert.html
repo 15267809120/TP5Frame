@@ -18,7 +18,7 @@
                             <!-- general form elements -->
                             <div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">新增导航栏</h3>
+                                    <h3 class="box-title">新增权限组</h3>
                                 </div>
                                 <!-- form start -->
                                 <form role="form" id="form">
@@ -30,15 +30,40 @@
                                         </div>
                                     {/volist}
                                         <div class="form-group">
-                                            <label>pid</label>
-                                            <select class="form-control" name="pid" id="pid">
-                                            		<option value="0">空（没有上级）</option>
-                                            	{volist name="data" id="vo"}
-                                                	<option value="{$vo.id}">{$vo.name}</option>
-                                                {/volist}
-                                            </select>
+                                            <label for="jurisdiction">jurisdiction</label>
+                                            <div class="checkbox">
+                                            {volist name="menu_list" id="vo"}
+                                                <label>
+                                                    <input type="checkbox" name="id-{$vo.id}" value="1" />
+                                                    {$vo.name}
+                                                </label>
+                                                {if condition="!empty($vo['zlist'])"}
+                                                    <div style="text-indent:4em;">
+                                                        {volist name="vo['zlist']" id="v"}
+	                                                        <label>
+	                                                            <input type="checkbox" name="id-{$v.id}" value="1" />
+	                                                            {$v.name}
+	                                                        </label>
+	                                                        {if condition="!empty($v['zlist'])"}
+			                                                    <div style="text-indent:8em;">
+			                                                        {volist name="v['zlist']" id="vl"}
+			                                                        <label>
+			                                                            <input type="checkbox" name="id-{$vl.id}" value="1" />
+			                                                            {$vl.name}
+			                                                        </label>
+			                                                        {/volist}
+			                                                    </div>
+			                                                {/if}
+                                                        {/volist}
+                                                    </div>
+                                                {/if}
+                                                <div style="margin-bottom: 30px;"></div>
+                                            {/volist}
+                                            </div>
                                         </div>
+
                                     </div><!-- /.box-body -->
+
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
                                     </div>
@@ -54,24 +79,22 @@
         <script type="text/javascript">
             function ajax_submit(){
                 var name = $('#name').val();
-                var link = $('#link').val();
-                var pid = $('#pid option:selected').val();
+                var get_data = $('#form').serialize();
                 var error = '';
-                if(name == '') error = '请输入管理员账号';
-                if(link == '') error = '请输入管理员昵称';
-                if(pid == '') error = '请选择权限分组';
+                if(name == '') error = '请输入权限组名字';
+                if(get_data.indexOf('id-') === -1) error = '请选择权限';
                 if(error != ''){
                     layer.msg(error);
                     return false;
                 }
                 $.ajax({
-                    url:"{:Url('Menu/insert')}",
+                    url:"{:Url('Jurisdiction/insert')}",
                     datatype:'json',
                     type:'post',
                     data:$('#form').serialize(),
                     success : function (result){
                         if(result.code == 'success'){
-                            location.href="{:Url('Menu/MenuList')}";
+                            location.href="{:Url('Jurisdiction/grouplist')}";
                         }else if(result.code == 'error'){
                         	layer.msg(result.str);
                         }

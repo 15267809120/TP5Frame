@@ -17,13 +17,16 @@ class Base extends Controller
 	public $is_login = '';
 	public $path_info = '';
 	
+	public $number = 0;
+	
 	public function __construct(){
 		parent::__construct();
 		$request = Request::instance();
 		//开发的时候，可关闭$this->path_info，取消权限控制
-		//$this->path_info = strtolower($_SERVER['PATH_INFO']);//dump(Session::get());
+//		$this->path_info = strtolower($_SERVER['PATH_INFO']);//dump(Session::get());
 		$this->no_authority = url('Index/index');
 		$this->is_login = url('Login/login');
+		$this->number = '';
 	}
 
 	public function isLogin(){
@@ -42,7 +45,7 @@ class Base extends Controller
 			}
 		}
 	}
-
+	//获得后台导航栏
 	public function getMenu(){
 		$menuM = new AdminMenuModel();
 		$result = $menuM::all(['is_show' => 1]);
@@ -58,7 +61,7 @@ class Base extends Controller
 		$menu = $this->menuClassification($menu);
 		Cookie::set('menu', $menu);
 	}
-
+	//递归求导航栏列表
 	protected function menuClassification($menu, $id = 0, $level = 1){
 		foreach($menu as $key => $value){
 			if($level === 1){
@@ -111,6 +114,12 @@ class Base extends Controller
 	    }
 	    
 	}
+	
+	public function getClassList($array = array(), $pid = '', $level = 0){
+		if(empty($array)) return ;
+		
+        return ['data' => $result_array, 'level' => $level];
+    }
 	
 //	public function getPathInfo(){
 //	    $menu = Cookie::get('menu_list');
