@@ -40,9 +40,13 @@ class User extends Base
         return $result;
     }
 
-    public function getCountUser(){
-        $UserM = new AdminUserModel();
-        $data = $UserM->count();
+    public function getCountUser($where = array()){
+        $UserM = new ViewAdminUserModel();
+        if(empty($where['search_value'])){
+        	$data = $UserM->count();
+        }else{
+        	$data = $UserM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->count();
+        }
         return $data;
     }
 

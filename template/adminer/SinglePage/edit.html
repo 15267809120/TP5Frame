@@ -1,0 +1,77 @@
+{include file="Public/header" /}
+    <body class="skin-blue">
+        <!-- header logo: style can be found in header.less -->
+        {include file="Public/header-nav" /}
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            {include file="Public/menu" /}
+
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                
+                {include file="Public/breadcrumb" /}
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-6">
+                            <!-- general form elements -->
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">单页面编写</h3>
+                                </div>
+                                <!-- form start -->
+                                <form role="form" id="form">
+                                    <div class="box-body">
+	                                    {volist name="fields" id="vo"}
+	                                    {if condition="$vo['type'] eq 'text'"}
+	                                    	<div class="form-group">
+	                                            <label for="{$vo.fields}">{$vo.fields}</label>
+	                                            <input type="text" class="form-control" id="{$vo.fields}" name="{$vo.fields}" value="{if condition='!empty($data[$vo["fields"]])'}{$data[$vo['fields']]}{/if}" placeholder="请输入{$vo.fields}">
+	                                        </div>
+	                                    {elseif  condition="$vo['type'] eq 'email'"/}
+	                                        <div class="form-group">
+	                                            <label for="{$vo.fields}">{$vo.fields}</label>
+	                                            <input type="email" class="form-control" id="{$vo.fields}" name="{$vo.fields}" value="{if condition='!empty($data[$vo["fields"]])'}{$data[$vo['fields']]}{/if}" placeholder="请输入{$vo.fields}">
+	                                        </div>
+	                                    {elseif  condition="$vo['type'] eq 'editor'"/}
+	                                        <div class="form-group">
+	                                            <label for="{$vo.fields}">{$vo.fields}</label>
+	                                            <textarea id="{$vo.fields}" class="form-control editor">{if condition='!empty($data[$vo["fields"]])'}{$data[$vo['fields']]}{/if}</textarea>
+	                                        </div>
+	                                    {/if}
+	                                    
+	                                    {/volist}
+                                    </div><!-- /.box-body -->
+
+                                    <div class="box-footer">
+                                        <button type="submit" class="btn btn-primary" onclick="return ajax_submit();">提交</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.box -->
+
+                        </div><!--/.col (left) -->
+                        
+                    </div>   <!-- /.row -->
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+        <script type="text/javascript">
+            function ajax_submit(){
+                $.ajax({
+                    url:"{:Url('Config/siteConfig')}",
+                    datatype:'json',
+                    type:'post',
+                    data:$('#form').serialize(),
+                    success : function (result){
+                        if(result != ''){
+                            layer.msg('修改成功');
+                        }
+                    }
+                })
+                return false;
+            }
+        </script>
+        
+    {include file="Public/footer" /}
+    </body>
+</html>

@@ -35,7 +35,6 @@ class Menu extends Base
 	        	$data_temp[$value['id']] = $value;
 	        }
         }
-        
 
         $result = array('data' => $data_temp, 'page' => $page);
         return $result;
@@ -59,9 +58,13 @@ class Menu extends Base
         return $data_temp;
     }
 
-    public function getCountMenu(){
+    public function getCountMenu($where = array()){
         $MenuM = new MenuModel();
-        $data = $MenuM->count();
+        if(empty($where['search_value'])){
+        	$data = $MenuM->count();
+        }else{
+        	$data = $MenuM->where($where['search_name'], 'like', '%'.$where['search_value'].'%')->count();
+        }
         return $data;
     }
 
@@ -86,15 +89,7 @@ class Menu extends Base
         return $data;
     }
     
-    public function getMenuAttr($data, $attr = array()){
-    	if($attr == '') return $data;
-    	foreach($data as $key => $value){
-    		foreach($attr as $k){
-    			$data_temp[$key][$k] = $value[$k];
-    		}
-    	}
-    	return $data_temp;
-    }    
+    
 
     public function updateMenuAttr($data, $attr = array()){
     	if($attr == '') return $data;
@@ -170,6 +165,15 @@ class Menu extends Base
         }else{
             return ['code' => 'error', 'str' => $result];
         }
+    }
+    
+    public function getLevelList($level){
+    	$data_list = $this->getTotalMenu();
+        $data_list = $this->getClassList($data_list);
+        foreach($data_list['data'] as $key => $value){
+        	if($value['level'] == $level) $data[$key] = $value;
+        }
+        return $data;
     }
 
 }

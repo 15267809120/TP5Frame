@@ -31,10 +31,18 @@
 	                                        </div>
 	                                    {/volist}
                                         <div class="form-group">
-                                            <label>Group</label>
-                                            <select class="form-control" name="pid" id="pid">
+                                            <label style="display:block;">pid</label>
+                                            <select class="form-control" id="level" style="width:30%; float:left;" onchange="switch_level();">
+                                            	{for start="1" end="$max_level"}
+                                                	<option value="{$i}" onclick="switch_level();" {if condition="$now_level eq $i"}selected{/if}>{$i}级目录</option>
+                                                {/for}
+                                            </select>
+                                            <select class="form-control" name="pid" id="pid" style="width:70%; float:right;">
+                                            		<option value="0">空（没有上级）</option>
                                             	{volist name="data_list" id="vo"}
-                                                	<option value="{$vo.id}" {if condition="$vo.id eq $info['pid']"}selected="selected"{/if}>{$vo.name}</option>
+                                            		{if condition="$vo['level'] eq $now_level"}
+                                            			<option value="{$vo.id}" {if condition="$info['pid'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
+                                            		{/if}
                                                 {/volist}
                                             </select>
                                         </div>
@@ -44,7 +52,6 @@
                                     </div>
                                 </form>
                             </div><!-- /.box -->
-
                         </div><!--/.col (left) -->
                         
                     </div>   <!-- /.row -->
@@ -81,6 +88,23 @@
                     }
                 })
                 return false;
+            }
+            function switch_level(){
+            	var level = $('#level option:selected').val();
+            	var str = '';
+            	$.ajax({
+            		url:"{:Url('Menu/ajaxLevel')}",
+            		typedata:'json',
+            		type:'post',
+            		data:'level='+level,
+            		success : function (result){
+            			str += '<option value="0">空（没有上级）</option>';
+            			$.each(result, function(index, value){
+            				str += '<option value="'+value.id+'">'+value.name+'</option>';
+            			});
+            			$('#pid').html(str);
+            		}
+            	})
             }
         </script>
     {include file="Public/footer" /}

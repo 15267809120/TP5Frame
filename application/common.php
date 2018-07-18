@@ -33,10 +33,20 @@ function getData($array){
 	}
 	return $data;
 }
-
+//移除不需要的字段
 function removeFields($get_data, $fields){
 	foreach($fields as $key => $value){
 		if(isset($get_data[$value])) $data[$value] = $get_data[$value];
 	}
 	return $data;
+}
+//获取需要的字段
+function getAttr($data, $attr = array()){
+	if($attr == '' || empty($data)) return $data;
+	foreach($data as $key => $value){
+		foreach($attr as $k){
+			$data_temp[$key][$k] = $value[$k];
+		}
+	}
+	return $data_temp;
 }

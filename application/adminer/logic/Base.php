@@ -115,10 +115,31 @@ class Base extends Controller
 	    
 	}
 	
-	public function getClassList($array = array(), $pid = '', $level = 0){
+	public function getClassList($array = array(), $initial_id = 0, $pid = '', $level = 0, $max_level = 0){
 		if(empty($array)) return ;
+		$data_temp = $array;
+		$temp = 0;
+		foreach($array as $key => $value){
+			$pid = $level > 0 ? $pid : $value['pid'];
+			if(!$level){
+				$initial_id = $value['id'];
+				$result = $this->getClassList($data_temp, $initial_id, $pid, ++$level, $max_level);
+				$temp = 1;
+			}else if(array_key_exists($pid,$array)){
+				$pid = $array[$pid]['pid'];
+				$result = $this->getClassList($data_temp, $initial_id, $pid, ++$level, $max_level);
+				$temp = 1;
+			}
+			if($temp){
+				if($level == 1) $level = 0;
+				$data_temp = $result['data'];
+				$max_level = $result['max_level'] > $level ? $result['max_level'] : $level;
+				$temp = 0;
+			}
+		}
+		if(!isset($data_temp[$initial_id]['level'])) $data_temp[$initial_id]['level'] = $level;
 		
-        return ['data' => $result_array, 'level' => $level];
+        return ['data' => $data_temp, 'max_level' => $max_level];
     }
 	
 //	public function getPathInfo(){

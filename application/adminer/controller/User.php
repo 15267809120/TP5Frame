@@ -74,7 +74,7 @@ class User extends Base
     		$get_data = Request::instance()->param();
     		if(empty($get_data['page'])) $get_data['page'] = 1;
     		$data = $this->userL->getUser($get_data, 'toArray', $get_data['page']);
-    		$count = $this->userL->getCountUser();
+    		$count = $this->userL->getCountUser($get_data);
         	$list_fields = $this->userL->getFieldsUser('list_hidden');
         	
     		$this->assign('list', $data['data']);

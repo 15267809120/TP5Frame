@@ -21,10 +21,10 @@
                                     <table id="example1" class="table table-bordered table-striped">
                                         <div class="row">
                                             <div class="col-xs-2">
-                                                <a href="{:Url('Jurisdiction/insert')}">新增</a>
+                                                <a href="{:Url('Singlepage/insert')}">新增</a>
                                             </div>
                                             <div class="col-xs-6">
-                                                <select id="search_name">
+                                            	<select id="search_name">
                                                     {volist name="list_fields" id="vo"}
                                                     	<option value="{$vo}">{$vo}</option>
                                                     {/volist}
@@ -44,12 +44,13 @@
                                         <tbody>
                                             {volist name="list" id="vo"}
                                             <tr>
-                                                {volist name="$vo" id="v"}
-                                                    <td>{$v}</td>
+                                                {volist name="list_fields" id="v"}
+                                                    <td>{$vo[$v]}</td>
                                                 {/volist}
                                                 <td>
-                                                    <button class="btn btn-info btn-sm" onclick="return update_this('{$vo.group_id}');">修改</button>
-                                                    <button class="btn btn-danger btn-sm" onclick="return delete_this('{$vo.group_id}');">删除</button>
+                                                	<button class="btn btn-primary btn-sm" onclick="return edit_this('{$vo.id}');">编辑内容</button>
+                                                    <button class="btn btn-info btn-sm" onclick="return update_this('{$vo.id}');">修改</button>
+                                                    <button class="btn btn-danger btn-sm" onclick="return delete_this('{$vo.id}');">删除</button>
                                                 </td>
                                             </tr>
                                             {/volist}
@@ -97,8 +98,14 @@
     });
 
     function update_this(id){
-        var url = "{:Url('Jurisdiction/update')}";
-        url = url.replace('.html','/group_id/'+id);
+        var url = "{:Url('Singlepage/update')}";
+        url = url.replace('.html','/id/'+id);
+        location.href=url;
+    }
+    
+    function edit_this(id){
+        var url = "{:Url('Singlepage/edit')}";
+        url = url.replace('.html','/id/'+id);
         location.href=url;
     }
 
@@ -108,10 +115,10 @@
             btn: ['删除','取消'] //按钮
         }, function(){
             $.ajax({
-                url:"{:Url('Jurisdiction/delete')}",
+                url:"{:Url('Singlepage/delete')}",
                 datatype:'json',
                 type:'post',
-                data:'group_id='+id,
+                data:'id='+id,
                 success : function (result){
                     if(result.code == 'success'){
                         location.reload();
@@ -129,7 +136,7 @@
     function search(){
     	var search_name = $('#search_name').val();
     	var search_value = $('#search_value').val();
-    	var url = "{:Url('Jurisdiction/search')}";
+    	var url = "{:Url('Singlepage/search')}";
         url = url.replace('.html','/search_name/'+search_name+'/search_value/'+search_value);
         location.href=url;
     }

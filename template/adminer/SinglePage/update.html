@@ -18,51 +18,34 @@
                             <!-- general form elements -->
                             <div class="box box-primary">
                                 <div class="box-header">
-                                    <h3 class="box-title">更新权限组</h3>
+                                    <h3 class="box-title">修改单页面</h3>
                                 </div>
                                 <!-- form start -->
                                 <form role="form" id="form">
+                                	<input type="hidden" name="id" id="id" value="{$info.id}" />
                                     <div class="box-body">
                                     	{volist name="list_fields" id="vo"}
 	                                        <div class="form-group">
 	                                            <label for="{$vo}">{$vo}</label>
-	                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="{$info.name}" placeholder="请输入{$vo}">
+	                                            <input type="text" class="form-control" id="{$vo}" name="{$vo}" value="{$info[$vo]}" placeholder="请输入{$vo}">
 	                                        </div>
                                         {/volist}
                                         <div class="form-group">
-                                            <label for="jurisdiction">jurisdiction</label>
-                                            <div class="checkbox">
-                                            {volist name="menu_list" id="vo"}
-                                                <label>
-                                                    <input type="checkbox" name="id-{$vo.id}" value="1" {if condition="strpos($info['jurisdiction'], $vo['id']) !== false"}checked{/if} />
-                                                    {$vo.name}
-                                                </label>
-                                                {if condition="!empty($vo['zlist'])"}
-                                                    <div style="text-indent:4em;">
-                                                        {volist name="vo['zlist']" id="v"}
-	                                                        <label>
-	                                                            <input type="checkbox" name="id-{$v.id}" value="1" {if condition="strpos($info['jurisdiction'], $v['id']) !== false"}checked{/if} />
-	                                                            {$v.name}
-	                                                        </label>
-	                                                        {if condition="!empty($v['zlist'])"}
-			                                                    <div style="text-indent:8em;">
-			                                                        {volist name="v['zlist']" id="vl"}
-			                                                        <label>
-			                                                            <input type="checkbox" name="id-{$vl.id}" value="1" {if condition="strpos($info['jurisdiction'], $vl['id']) !== false"}checked{/if} />
-			                                                            {$vl.name}
-			                                                        </label>
-			                                                        {/volist}
-			                                                    </div>
-			                                                {/if}
-                                                        {/volist}
-                                                    </div>
-                                                {/if}
-                                                <div style="margin-bottom: 30px;"></div>
-                                            {/volist}
-                                            </div>
-                                            <input type="hidden" name="group_id" value="{$info.group_id}" />
-                                        </div>
-
+	                                        <label style="display:block;">menu_id</label>
+	                                        <select class="form-control" id="level" style="width:30%; float:left;" onchange="switch_level();">
+	                                        	{for start="1" end="$max_level"}
+                                                	<option value="{$i}" onclick="switch_level();" {if condition="$now_level eq $i"}selected{/if}>{$i}级目录</option>
+                                                {/for}
+	                                        </select>
+	                                        <select class="form-control" name="menu_id" id="menu_id" style="width:70%; float:right;">
+	                                        	{volist name="data_list" id="vo"}
+	                                        		{if condition="$vo['level'] eq $now_level"}
+                                            			<option value="{$vo.id}" {if condition="$info['menu_id'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
+                                            		{/if}
+	                                            {/volist}
+	                                        </select>
+	                                    </div>
+	                                    <div style="clear:both;"></div>
                                     </div><!-- /.box-body -->
 
                                     <div class="box-footer">
@@ -79,28 +62,43 @@
         </div><!-- ./wrapper -->
         <script type="text/javascript">
             function ajax_submit(){
-                var name = $('#name').val();
-                var get_data = $('#form').serialize();
+                var field = $('#field').val();
                 var error = '';
-                if(name == '') error = '请输入权限组名字';
-                if(get_data.indexOf('id-') === -1) error = '请选择权限';
+                if(field == '') error = '请输入单页面的字段名和格式';
                 if(error != ''){
                     layer.msg(error);
                     return false;
                 }
                 $.ajax({
-                    url:"{:Url('Jurisdiction/update')}",
+                    url:"{:Url('Singlepage/update')}",
                     datatype:'json',
                     type:'post',
                     data:$('#form').serialize(),
                     success : function (result){
-                        console.log(result);
                         if(result.code == 'success'){
-                            location.href="{:Url('Jurisdiction/grouplist')}";
+                            location.href="{:Url('Singlepage/pageList')}";
+                        }else if(result.code == 'error'){
+                        	layer.msg(result.str);
                         }
                     }
                 })
                 return false;
+            }
+            function switch_level(){
+            	var level = $('#level option:selected').val();
+            	var str = '';
+            	$.ajax({
+            		url:"{:Url('Menu/ajaxLevel')}",
+            		typedata:'json',
+            		type:'post',
+            		data:'level='+level,
+            		success : function (result){
+            			$.each(result, function(index, value){
+            				str += '<option value="'+value.id+'">'+value.name+'</option>';
+            			});
+            			$('#menu_id').html(str);
+            		}
+            	})
             }
         </script>
     {include file="Public/footer" /}
